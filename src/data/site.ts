@@ -424,7 +424,7 @@ export const toolkit = [
  * builds, so `npm run dev` never pollutes your session recordings.
  */
 export const analytics = {
-  clarityProjectId: "",
+  clarityProjectId: "y3dvnjccgz",
 } as const;
 
 /**
