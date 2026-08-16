@@ -1,0 +1,33 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout title="Page not found — Denis Kagotho" description="That page doesn't exist.">
+  <section class="relative isolate flex min-h-[80svh] items-center overflow-hidden bg-panel text-panel-ink">
+    <div class="ruled-panel absolute inset-0 opacity-60" aria-hidden="true"></div>
+    <div class="relative mx-auto w-full max-w-3xl px-5 py-24 md:px-8">
+      <p class="label text-accent-text">Error 404</p>
+      <h1 class="mt-5 font-display text-[clamp(3rem,12vw,7rem)] font-extrabold leading-[0.85]">
+        No page<br />here<span class="text-accent-text">.</span>
+      </h1>
+      <p class="mt-7 max-w-[46ch] text-lg text-panel-ink/80">
+        This URL doesn't resolve. A broken link is a wasted crawl — let's get you back to
+        something useful.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a
+          href="/"
+          class="pressable inline-flex min-h-12 items-center bg-signal px-6 py-3 text-sm font-bold text-signal-ink"
+        >
+          Back home
+        </a>
+        <a
+          href="/#work"
+          class="pressable inline-flex min-h-12 items-center border border-panel-ink/40 px-6 py-3 text-sm font-bold hover:bg-panel-ink hover:text-panel"
+        >
+          See the work
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

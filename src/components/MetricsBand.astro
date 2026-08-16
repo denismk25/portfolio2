@@ -1,0 +1,29 @@
+---
+import { highlights } from "@/data/site";
+
+// Duplicated once so the marquee can loop seamlessly at -50%.
+const track = [...highlights, ...highlights];
+---
+
+<section
+  class="marquee overflow-hidden border-y border-panel-line bg-panel py-6 text-panel-ink"
+  aria-label="Results highlights"
+>
+  <div class="marquee-track flex w-max items-stretch gap-10 pl-10 md:gap-14 md:pl-14">
+    {
+      track.map((item, i) => (
+        <div
+          class="flex shrink-0 items-baseline gap-3 border-l border-panel-line pl-10 md:pl-14"
+          aria-hidden={i >= highlights.length ? "true" : undefined}
+        >
+          <span class="numeral text-3xl font-extrabold text-accent-text md:text-4xl">
+            {item.value}
+          </span>
+          <span class="max-w-[16ch] text-sm leading-snug text-panel-ink/80">
+            {item.label}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+</section>

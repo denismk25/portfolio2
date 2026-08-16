@@ -1,0 +1,32 @@
+---
+import { nav, person } from "@/data/site";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-paper">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 md:flex-row md:items-center md:justify-between md:px-8"
+  >
+    <div>
+      <p class="font-display text-lg font-extrabold">
+        {person.name}<span class="text-accent-text">.</span>
+      </p>
+      <p class="label mt-2 text-muted">{person.subline.join(" · ")}</p>
+    </div>
+
+    <nav aria-label="Footer" class="flex flex-wrap gap-x-5 gap-y-2">
+      {
+        nav.map((item) => (
+          <a href={item.href} class="link-sweep text-sm font-medium text-muted hover:text-ink">
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <p class="font-mono text-xs text-muted">
+      © {year} · Built with Astro
+    </p>
+  </div>
+</footer>

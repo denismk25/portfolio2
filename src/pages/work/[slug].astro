@@ -1,0 +1,209 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import { caseStudies, person } from "@/data/site";
+import type { CaseStudy } from "@/data/site";
+
+export function getStaticPaths() {
+  return caseStudies.map((study, i) => ({
+    params: { slug: study.slug },
+    props: {
+      study,
+      next: caseStudies[(i + 1) % caseStudies.length],
+    },
+  }));
+}
+
+interface Props {
+  study: CaseStudy;
+  next: CaseStudy;
+}
+
+const { study, next } = Astro.props;
+
+const origin = (Astro.site ?? Astro.url.origin).toString().replace(/\/$/, "");
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  name: `${study.title} — ${study.kicker}`,
+  about: study.discipline,
+  abstract: study.objective,
+  url: `${origin}/work/${study.slug}/`,
+  author: { "@type": "Person", name: person.name },
+};
+---
+
+<Layout
+  title={`${study.title} — ${study.kicker} | ${person.name}`}
+  description={study.objective}
+  ogType="article"
+  jsonLd={jsonLd}
+>
+  {/* ---- Header panel ---- */}
+  <section class="relative isolate overflow-hidden bg-panel text-panel-ink">
+    <div class="ruled-panel absolute inset-0 opacity-60" aria-hidden="true"></div>
+
+    <div class="relative mx-auto max-w-5xl px-5 pb-16 pt-28 md:px-8 md:pb-20 md:pt-36">
+      <a
+        href="/#work"
+        class="pressable label inline-flex items-center gap-2 text-panel-ink/70 transition-colors hover:text-accent-text"
+      >
+        <svg
+          class="h-3.5 w-3.5"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M19 12H5M11 18l-6-6 6-6"></path>
+        </svg>
+        All work
+      </a>
+
+      <p class="label mt-8 text-accent-text">{study.discipline}</p>
+      <h1 class="mt-4 font-display text-[clamp(2.5rem,8vw,5rem)] font-extrabold leading-[0.88]">
+        {study.title}
+      </h1>
+      <p class="mt-4 text-xl text-panel-ink/75 md:text-2xl">{study.kicker}</p>
+
+      <dl class="mt-10 flex flex-wrap gap-x-10 gap-y-5 border-t border-panel-line pt-7">
+        {
+          study.meta.map((item) => (
+            <div>
+              <dt class="label text-panel-ink/55">{item.label}</dt>
+              <dd class="mt-1.5 font-medium">{item.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  {/* ---- Headline metrics ---- */}
+  <section
+    class="border-b border-line bg-surface"
+    aria-label={`Headline results for ${study.title}`}
+  >
+    <div class="mx-auto grid max-w-5xl gap-px bg-line px-0 sm:grid-cols-3">
+      {
+        study.headline.map((metric) => (
+          <div class="bg-surface px-5 py-9 text-center md:px-8 md:py-12">
+            <p class="numeral text-[clamp(2.25rem,5vw,3.25rem)] font-extrabold leading-none">
+              {metric.value}
+            </p>
+            <p class="mx-auto mt-3 max-w-[22ch] text-sm leading-snug text-muted">
+              {metric.label}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* ---- Body ---- */}
+  <article class="mx-auto max-w-5xl px-5 py-16 md:px-8 md:py-24">
+    <div class="grid gap-12 md:grid-cols-[0.32fr_0.68fr]">
+      <h2 class="label self-start text-muted md:sticky md:top-24">The objective</h2>
+      <p class="max-w-[62ch] font-display text-[clamp(1.35rem,2.8vw,1.9rem)] font-bold leading-[1.2]">
+        {study.objective}
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-12 border-t border-line pt-12 md:grid-cols-[0.32fr_0.68fr]">
+      <h2 class="label self-start text-muted md:sticky md:top-24">The challenge</h2>
+      <p class="max-w-[62ch] text-lg leading-relaxed text-muted">{study.challenge}</p>
+    </div>
+
+    <div class="mt-16 grid gap-12 border-t border-line pt-12 md:grid-cols-[0.32fr_0.68fr]">
+      <h2 class="label self-start text-muted md:sticky md:top-24">{study.strategyLabel}</h2>
+      <ol class="max-w-[62ch] space-y-8">
+        {
+          study.strategy.map((step, i) => (
+            <li class="flex gap-5" data-reveal style={`--reveal-delay:${i * 60}ms`}>
+              <span class="numeral shrink-0 text-2xl font-extrabold text-accent-text">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <div>
+                <h3 class="font-display text-xl font-bold">{step.label}</h3>
+                <p class="mt-2 leading-relaxed text-muted">{step.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="mt-16 grid gap-12 border-t border-line pt-12 md:grid-cols-[0.32fr_0.68fr]">
+      <h2 class="label self-start text-muted md:sticky md:top-24">{study.resultsLabel}</h2>
+      <ul class="max-w-[62ch] space-y-5">
+        {
+          study.results.map((result) => (
+            <li class="flex gap-4 border-b border-line pb-5 last:border-0">
+              <span class="mt-2 h-2 w-2 shrink-0 bg-accent-text" aria-hidden="true" />
+              <span class="text-lg leading-relaxed">{result}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    {
+      study.proof.length > 0 && (
+        <div class="mt-16 grid gap-12 border-t border-line pt-12 md:grid-cols-[0.32fr_0.68fr]">
+          <h2 class="label self-start text-muted md:sticky md:top-24">Proof</h2>
+          <div class="space-y-8">
+            {study.proof.map((shot) => (
+              <figure class="offset-block border border-ink">
+                <img src={shot.src} alt={shot.alt} loading="lazy" decoding="async" class="w-full" />
+                <figcaption class="border-t border-line px-4 py-3 font-mono text-xs text-muted">
+                  {shot.caption}
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )
+    }
+
+    {/* ---- Takeaway ---- */}
+    <div class="offset-block offset-fill mt-16 border border-ink bg-surface p-7 md:p-10">
+      <p class="label text-muted">Key takeaway</p>
+      <p class="mt-4 font-display text-[clamp(1.35rem,3vw,2rem)] font-bold leading-[1.2]">
+        {study.takeaway}
+      </p>
+    </div>
+  </article>
+
+  {/* ---- Next case study ---- */}
+  <a
+    href={`/work/${next.slug}/`}
+    class="group block border-t border-line bg-surface transition-colors hover:bg-paper"
+  >
+    <div class="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-6 px-5 py-12 md:px-8 md:py-16">
+      <div>
+        <p class="label text-muted">Next case study</p>
+        <p class="mt-3 font-display text-3xl font-extrabold md:text-4xl">{next.title}</p>
+        <p class="mt-2 text-muted">{next.kicker}</p>
+      </div>
+      <span
+        class="grid h-14 w-14 shrink-0 place-items-center border border-ink transition-colors group-hover:bg-signal group-hover:text-signal-ink"
+        aria-hidden="true"
+      >
+        <svg
+          class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M5 12h14M13 6l6 6-6 6"></path>
+        </svg>
+      </span>
+    </div>
+  </a>
+</Layout>

@@ -1,0 +1,170 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { person } from "@/data/site";
+
+// Picked up by glob rather than a direct import, so the build still succeeds
+// (with a single-column hero) if the file is ever absent. Replace the photo at
+// src/assets/profile.jpg and Astro re-optimizes it on the next build.
+const matches = import.meta.glob<{ default: ImageMetadata }>(
+  "../assets/profile.{jpg,jpeg,png,webp,avif}",
+  { eager: true },
+);
+const portrait = Object.values(matches)[0]?.default;
+---
+
+<section
+  class="relative isolate overflow-hidden bg-panel text-panel-ink"
+  aria-labelledby="hero-heading"
+>
+  {/* Ruled graph paper */}
+  <div class="ruled-panel absolute inset-0 opacity-70" aria-hidden="true"></div>
+
+  {/* Signature motif: a search-performance curve that draws itself in */}
+  <svg
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-[42%] w-full opacity-60 md:h-[62%] md:opacity-100"
+    viewBox="0 0 800 400"
+    preserveAspectRatio="none"
+    fill="none"
+    aria-hidden="true"
+  >
+    <defs>
+      <linearGradient id="plotFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--accent-text)" stop-opacity="0.28"></stop>
+        <stop offset="100%" stop-color="var(--accent-text)" stop-opacity="0"></stop>
+      </linearGradient>
+    </defs>
+    <path
+      class="plot-area"
+      d="M0,352 C60,348 100,344 150,338 C200,332 240,326 300,312 C355,299 400,282 450,258 C505,232 545,200 600,158 C655,116 700,74 760,36 L800,18 L800,400 L0,400 Z"
+      fill="url(#plotFill)"></path>
+    <path
+      class="plot-line"
+      d="M0,352 C60,348 100,344 150,338 C200,332 240,326 300,312 C355,299 400,282 450,258 C505,232 545,200 600,158 C655,116 700,74 760,36 L800,18"
+      stroke="var(--accent-text)"
+      stroke-width="2.5"
+      vector-effect="non-scaling-stroke"
+      stroke-linecap="round"></path>
+  </svg>
+
+  <div
+    class:list={[
+      "relative mx-auto grid min-h-[calc(100svh-4rem)] max-w-6xl items-center gap-10 px-5 pb-16 pt-28 md:gap-14 md:px-8 md:pb-24 md:pt-32",
+      portrait && "md:grid-cols-[1.2fr_0.8fr]",
+    ]}
+  >
+    <div class="min-w-0">
+      <p
+        class="label mb-6 flex flex-wrap items-center gap-x-3 gap-y-2 text-panel-ink/70"
+        data-reveal
+      >
+        <span class="inline-block h-2.5 w-2.5 bg-signal" aria-hidden="true"></span>
+        {person.title}
+      </p>
+
+      <h1
+        id="hero-heading"
+        class="font-display text-[clamp(3rem,11vw,6rem)] font-extrabold leading-[0.86] tracking-[-0.04em]"
+        data-reveal
+        style="--reveal-delay:70ms"
+      >
+        Denis<br class="sm:hidden" /> Kagotho<span class="text-accent-text">.</span>
+      </h1>
+
+      <ul
+        class="mt-7 flex flex-wrap gap-2"
+        data-reveal
+        style="--reveal-delay:140ms"
+        aria-label="Focus areas"
+      >
+        {
+          person.subline.map((item) => (
+            <li class="label border border-panel-line px-3 py-1.5 text-panel-ink/80">
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+
+      <p
+        class="mt-7 max-w-[52ch] text-lg leading-relaxed text-panel-ink/85 md:text-xl"
+        data-reveal
+        style="--reveal-delay:210ms"
+      >
+        {person.pitch}
+      </p>
+
+      <div class="mt-9 flex flex-wrap gap-3" data-reveal style="--reveal-delay:280ms">
+        <a
+          href="#work"
+          class="pressable inline-flex min-h-12 items-center gap-2 bg-signal px-6 py-3 text-sm font-bold text-signal-ink hover:brightness-105"
+        >
+          View my work
+          <svg
+            class="h-4 w-4"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M5 12h14M13 6l6 6-6 6"></path>
+          </svg>
+        </a>
+        <a
+          href="#capabilities"
+          class="pressable inline-flex min-h-12 items-center border border-panel-ink/40 px-6 py-3 text-sm font-bold text-panel-ink hover:bg-panel-ink hover:text-panel"
+        >
+          What I do
+        </a>
+      </div>
+    </div>
+
+    {
+      portrait && (
+        <div
+          class="portrait relative mx-auto w-52 sm:w-64 md:mx-0 md:w-full md:max-w-[340px]"
+          data-reveal
+          style="--reveal-delay:180ms"
+        >
+          {/* Offset signal block + outline, echoing the section blocks */}
+          <div
+            class="absolute -inset-2 translate-x-4 translate-y-4 bg-signal/85"
+            aria-hidden="true"
+          />
+          <div
+            class="absolute -inset-2 -translate-x-4 -translate-y-4 border border-panel-ink/40"
+            aria-hidden="true"
+          />
+          <Image
+            src={portrait}
+            alt={`Portrait of ${person.name}`}
+            widths={[340, 512, 680]}
+            sizes="(min-width: 768px) 340px, 208px"
+            format="webp"
+            quality={82}
+            loading="eager"
+            fetchpriority="high"
+            draggable={false}
+            class="relative aspect-square w-full select-none object-cover object-top grayscale contrast-[1.08] transition-[filter] duration-500 hover:grayscale-0"
+          />
+        </div>
+      )
+    }
+  </div>
+
+  {/* Tooltip pinned to the end of the curve */}
+  <div
+    class="plot-dot pointer-events-none absolute bottom-10 right-5 hidden items-center gap-2.5 lg:flex"
+    style="animation-delay:2.2s"
+    aria-hidden="true"
+  >
+    <div class="border border-accent-text/45 bg-panel/85 px-3 py-2 backdrop-blur-sm">
+      <p class="label text-accent-text">Impressions</p>
+      <p class="numeral text-xl font-extrabold leading-none">+811%</p>
+      <p class="mt-0.5 font-mono text-[10px] text-panel-ink/60">in 3 months</p>
+    </div>
+  </div>
+</section>

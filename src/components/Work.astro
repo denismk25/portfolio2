@@ -1,0 +1,113 @@
+---
+import SectionHeading from "@/components/SectionHeading.astro";
+import { additionalWork, builds, caseStudies } from "@/data/site";
+---
+
+<section id="work" class="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+  <SectionHeading
+    index="01 — Selected work"
+    title="Case studies"
+    lede="Four engagements, each led by the number it moved. Paid media first — it's the most differentiated proof."
+  />
+
+  <div class="grid gap-6 md:grid-cols-2">
+    {
+      caseStudies.map((study, i) => (
+        <a
+          href={`/work/${study.slug}/`}
+          class="offset-block group flex flex-col border border-ink bg-surface p-6 transition-colors hover:bg-paper md:p-8"
+          data-reveal
+          style={`--reveal-delay:${i * 80}ms`}
+        >
+          <div class="flex items-center justify-between gap-4">
+            <span class="label bg-ink px-2.5 py-1.5 text-paper transition-colors group-hover:bg-signal group-hover:text-signal-ink">
+              {study.discipline}
+            </span>
+            <svg
+              class="h-5 w-5 shrink-0 text-muted transition-transform duration-300 group-hover:translate-x-1 group-hover:text-ink"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M7 17 17 7M8 7h9v9" />
+            </svg>
+          </div>
+
+          <h3 class="mt-6 font-display text-3xl font-extrabold leading-[0.95] md:text-4xl">
+            {study.title}
+          </h3>
+          <p class="mt-2 text-sm text-muted">{study.kicker}</p>
+
+          <p class="mt-5 line-clamp-3 text-[0.95rem] leading-relaxed text-muted">
+            {study.challenge}
+          </p>
+
+          <dl class="mt-7 grid grid-cols-3 gap-3 border-t border-line pt-5">
+            {study.headline.map((metric) => (
+              <div class="flex flex-col-reverse">
+                <dt class="mt-1.5 text-[0.7rem] leading-tight text-muted">{metric.label}</dt>
+                <dd class="numeral text-2xl font-extrabold leading-none md:text-[1.75rem]">
+                  {metric.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </a>
+      ))
+    }
+  </div>
+
+  {/* ---- Additional paid media & social ---- */}
+  <div class="mt-20 border-t-2 border-ink pt-10" data-reveal>
+    <h3 class="font-display text-2xl font-extrabold md:text-3xl">
+      {additionalWork.title}
+    </h3>
+    <div class="mt-8 grid gap-8 sm:grid-cols-3">
+      {
+        additionalWork.items.map((item) => (
+          <div class="border-l-2 border-accent-text pl-5">
+            <p class="numeral text-3xl font-extrabold leading-none">{item.value}</p>
+            <p class="label mt-3 text-muted">{item.label}</p>
+            <p class="mt-3 text-[0.95rem] leading-relaxed text-muted">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  {/* ---- Web builds ---- */}
+  <div class="mt-20 border-t-2 border-ink pt-10" data-reveal>
+    <h3 class="font-display text-2xl font-extrabold md:text-3xl">Web development</h3>
+    <p class="mt-3 max-w-[60ch] text-muted">
+      A selection of client sites built and managed during agency work.
+    </p>
+    <ul class="mt-8 divide-y divide-line border-y border-line">
+      {
+        builds.map((build) => (
+          <li>
+            {build.url ? (
+              <a
+                href={build.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group flex flex-wrap items-center justify-between gap-3 py-5 transition-colors hover:text-plot"
+              >
+                <span class="font-display text-xl font-bold">{build.name}</span>
+                <span class="label text-muted">{build.stack}</span>
+              </a>
+            ) : (
+              <div class="flex flex-wrap items-center justify-between gap-3 py-5">
+                <span class="font-display text-xl font-bold">{build.name}</span>
+                <span class="label text-muted">{build.stack}</span>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

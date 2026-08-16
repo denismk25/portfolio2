@@ -1,0 +1,29 @@
+---
+interface Props {
+  index: string;
+  title: string;
+  lede?: string;
+  id?: string;
+}
+
+const { index, title, lede, id } = Astro.props;
+---
+
+<div class="mb-10 md:mb-14" data-reveal>
+  <div class="flex items-end justify-between gap-6 border-b-2 border-ink pb-4">
+    <div class="min-w-0">
+      <p class="label mb-3 text-muted">{index}</p>
+      <h2
+        id={id}
+        class="font-display text-[clamp(2.25rem,6.5vw,4.25rem)] font-extrabold leading-[0.9]"
+      >
+        {title}
+      </h2>
+    </div>
+    <span
+      class="hidden shrink-0 pb-2 font-display text-5xl leading-none text-accent-text md:block"
+      aria-hidden="true">↘</span
+    >
+  </div>
+  {lede && <p class="mt-6 max-w-[62ch] text-lg leading-relaxed text-muted">{lede}</p>}
+</div>

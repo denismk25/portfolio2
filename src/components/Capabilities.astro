@@ -1,0 +1,61 @@
+---
+import SectionHeading from "@/components/SectionHeading.astro";
+import { capabilities } from "@/data/site";
+---
+
+<section id="capabilities" class="mx-auto max-w-6xl px-5 py-20 md:px-8 md:py-28">
+  <SectionHeading
+    index="03 — What I do"
+    title="Capabilities"
+    lede="Five disciplines that feed each other: paid data sharpens the SEO roadmap, SEO shapes the build, the build carries the campaign."
+  />
+
+  <div class="border-t border-ink">
+    {
+      capabilities.map((cap, i) => (
+        <details
+          class="group border-b border-line"
+          open={i === 0}
+          data-reveal
+          style={`--reveal-delay:${i * 60}ms`}
+        >
+          <summary class="flex cursor-pointer list-none items-start gap-5 py-7 [&::-webkit-details-marker]:hidden">
+            <span class="label mt-2 shrink-0 text-muted">{cap.index}</span>
+            <div class="min-w-0 flex-1">
+              <h3 class="font-display text-2xl font-extrabold leading-tight transition-colors group-open:text-ink md:text-[2rem]">
+                {cap.name}
+              </h3>
+              <p class="mt-2 max-w-[62ch] text-[0.95rem] leading-relaxed text-muted">
+                {cap.summary}
+              </p>
+            </div>
+            <span
+              class="mt-2 grid h-8 w-8 shrink-0 place-items-center border border-line transition-colors group-hover:border-ink group-open:bg-signal group-open:text-signal-ink"
+              aria-hidden="true"
+            >
+              <svg
+                class="h-4 w-4 transition-transform duration-300 group-open:rotate-45"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <path d="M12 5v14M5 12h14" />
+              </svg>
+            </span>
+          </summary>
+
+          <div class="grid gap-6 pb-9 pl-0 sm:pl-[3.25rem] md:grid-cols-3">
+            {cap.detail.map((row) => (
+              <div class="border-t border-line pt-4">
+                <p class="label text-plot">{row.label}</p>
+                <p class="mt-2.5 text-[0.95rem] leading-relaxed text-muted">{row.text}</p>
+              </div>
+            ))}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>

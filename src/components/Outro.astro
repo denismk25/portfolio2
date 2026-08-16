@@ -1,0 +1,51 @@
+---
+import { outro, person } from "@/data/site";
+---
+
+<section class="relative isolate overflow-hidden bg-panel text-panel-ink">
+  <div class="ruled-panel absolute inset-0 opacity-60" aria-hidden="true"></div>
+
+  <svg
+    class="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 w-full opacity-45"
+    viewBox="0 0 800 400"
+    preserveAspectRatio="none"
+    fill="none"
+    aria-hidden="true"
+  >
+    <path
+      d="M0,352 C60,348 100,344 150,338 C200,332 240,326 300,312 C355,299 400,282 450,258 C505,232 545,200 600,158 C655,116 700,74 760,36 L800,18"
+      stroke="var(--accent-text)"
+      stroke-width="2"
+      vector-effect="non-scaling-stroke"
+      stroke-linecap="round"></path>
+  </svg>
+
+  <div class="relative mx-auto max-w-6xl px-5 py-24 md:px-8 md:py-32">
+    <div class="max-w-[34ch]" data-reveal>
+      <p class="label mb-6 text-accent-text">{person.subline.join(" · ")}</p>
+      <h2 class="font-display text-[clamp(2.5rem,8vw,5rem)] font-extrabold leading-[0.88]">
+        {outro.heading}<span class="text-accent-text">.</span>
+      </h2>
+      <p class="mt-7 text-lg leading-relaxed text-panel-ink/80">{outro.body}</p>
+
+      <a
+        href="#work"
+        class="pressable mt-9 inline-flex min-h-12 items-center gap-2 border border-panel-ink/40 px-6 py-3 text-sm font-bold hover:bg-panel-ink hover:text-panel"
+      >
+        Back to the work
+        <svg
+          class="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M12 19V5M6 11l6-6 6 6"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>

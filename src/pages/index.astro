@@ -1,0 +1,43 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/Hero.astro";
+import MetricsBand from "@/components/MetricsBand.astro";
+import Work from "@/components/Work.astro";
+import About from "@/components/About.astro";
+import Capabilities from "@/components/Capabilities.astro";
+import Toolkit from "@/components/Toolkit.astro";
+import Outro from "@/components/Outro.astro";
+import { capabilities, person } from "@/data/site";
+
+const origin = (Astro.site ?? Astro.url.origin).toString().replace(/\/$/, "");
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: person.name,
+    jobTitle: person.title,
+    description: person.metaDescription,
+    url: `${origin}/`,
+    knowsAbout: capabilities.map((c) => c.name),
+    knowsLanguage: ["English", "Swahili"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: `${person.name} — Portfolio`,
+    url: `${origin}/`,
+    inLanguage: "en-US",
+  },
+];
+---
+
+<Layout jsonLd={jsonLd}>
+  <Hero />
+  <MetricsBand />
+  <Work />
+  <About />
+  <Capabilities />
+  <Toolkit />
+  <Outro />
+</Layout>
