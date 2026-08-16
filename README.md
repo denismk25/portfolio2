@@ -67,6 +67,37 @@ no markup changes needed.
 The hero picks the file up by glob rather than a hard import, so the build still succeeds
 with a single-column hero if the file is ever missing.
 
+## Analytics — Microsoft Clarity
+
+Paste your project ID into `analytics.clarityProjectId` in `src/data/site.ts`, commit, push.
+Vercel redeploys and it's live on all pages.
+
+```ts
+export const analytics = {
+  clarityProjectId: "abcd1234ef",
+} as const;
+```
+
+Get the ID from [clarity.microsoft.com](https://clarity.microsoft.com) → your project →
+Settings → Setup. It's the string in `clarity.ms/tag/<this-bit>`.
+
+How it behaves:
+
+- **Blank ID emits nothing.** No empty script tag, no failed request — the component
+  renders nothing at all.
+- **Production only.** `npm run dev` never fires Clarity, so your own local sessions stay
+  out of the recordings. To smoke-test it locally, run `npm run build && npm run preview`.
+- **Doesn't cost you LCP.** The tag injects itself asynchronously, and the head carries a
+  `preconnect` to `clarity.ms` so the TLS handshake overlaps the rest of the page.
+
+The ID sits in the repo rather than an env var on purpose: Clarity IDs are public by
+definition — visible in the page source of every site that runs Clarity — so hiding one
+buys nothing and adds a Vercel config step you can forget.
+
+Clarity records sessions and heatmaps. This site collects nothing itself (no forms, no
+contact fields), so the privacy surface is small, but if you ever want EU-facing consent
+gating, Clarity's `clarity("consent")` API is the hook.
+
 ## Two things to finish before launch
 
 ### 1. Custom domain (only when you buy one)

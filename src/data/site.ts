@@ -416,6 +416,18 @@ export const toolkit = [
 ] as const;
 
 /**
+ * Analytics. Clarity project IDs are not secrets — they're visible in the page
+ * source of every site running Clarity — so this lives in the repo rather than
+ * in an env var, and there's no Vercel config step to forget.
+ *
+ * Leave blank and no script is emitted at all. The tag only loads in production
+ * builds, so `npm run dev` never pollutes your session recordings.
+ */
+export const analytics = {
+  clarityProjectId: "",
+} as const;
+
+/**
  * Closing band. This site carries no contact details, no contact form and no
  * contact section by design — the outro closes the page on the work instead.
  */
